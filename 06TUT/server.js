@@ -2,7 +2,32 @@ const express = require('express');
 const app = express();
 
 const path = require('path');
+const logEvents = require('./middleware/logEvents')
 const PORT = process.env.PORT || 3500;
+
+//custom middleware logger
+app.use((req, res, next) => {
+    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt')
+    console.log(`${req.method} ${req.path}`);
+    next();
+})
+
+//built-in middleware to handle urlencoded data
+//in oder words, form data:
+// 'content-type: application/x-www-form-urlencoded'
+
+//middleware integrado para lidar com dados codificados em URL
+//em outras palavras, dados do formulário:
+// 'tipo de conteúdo: aplicativo/x-www-form-urlencoded'
+
+app.use(express.urlencoded({extended: false}));
+
+//built-in middleware for json;
+//middleware integrado para json;
+app.use(express.json());
+
+//serve static files
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('^/$|index(.html)?', (req, res) => {
     // res.sendFile('./views/index.html', {root: __dirname});
@@ -17,7 +42,7 @@ app.get('/old-page(.html)?', (req, res) => {
     res.redirect(301, '/new-page.html'); //302 y default
 });
 
-//route handlers
+//Route handlers
 app.get('/hello(.html)?', (req, res, next) => {
     console.log('attempted to load hello.html');
     next();
@@ -50,3 +75,6 @@ app.get('/*', (req, res) => {
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+
+
+// 2:35:34

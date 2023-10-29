@@ -1,0 +1,2 @@
+20231029	18:59:02	3c2c6a5e-1d08-4234-90c7-e876bd74b287	GET	undefined	/
+20231029	18:59:02	d6a220ff-6b71-42ce-8910-f5d714875796	GET	undefined	/css/style.css
